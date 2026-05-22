@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VECTRAL SECURITY — Asesoría y Evaluación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0c0e;
+    --bg-secondary: #0f1214;
+    --bg-card: #111518;
+    --bg-card-hover: #141a1f;
+    --border: rgba(255,255,255,0.06);
+    --border-accent: rgba(82,165,196,0.25);
+    --text-primary: #d8dde3;
+    --text-secondary: #7a8898;
+    --text-dim: #4a5563;
+    --accent-blue: #52a5c4;
+    --accent-cyan: #3cc9c9;
+    --accent-green: #4aab7a;
+    --accent-muted: rgba(82,165,196,0.15);
+    --grid-line: rgba(255,255,255,0.03);
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Grid background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ambient glow */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(82,165,196,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,12,14,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+  }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo .logo-mark {
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--accent-blue);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .nav-logo .logo-mark::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--accent-blue);
+    display: block;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-blue) !important;
+    border: 1px solid var(--border-accent);
+    padding: 7px 16px;
+    transition: background 0.2s, color 0.2s !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent-muted);
+    color: var(--accent-cyan) !important;
+  }
+
+  /* ─── SECTIONS ─── */
+  section { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeSlide 0.8s 0.1s forwards;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent-blue);
+  }
+
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(42px, 5.5vw, 72px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #e8edf2;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeSlide 0.8s 0.2s forwards;
+  }
+
+  .hero-title span { color: var(--accent-blue); }
+
+  .hero-sub {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 560px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeSlide 0.8s 0.3s forwards;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: fadeSlide 0.8s 0.4s forwards;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+  }
+
+  .tag.accent {
+    color: var(--accent-green);
+    border-color: rgba(74,171,122,0.2);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeSlide 0.8s 0.5s forwards;
+  }
+
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bg-primary);
+    background: var(--accent-blue);
+    padding: 13px 28px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, opacity 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--accent-cyan); }
+
+  .btn-secondary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 13px 28px;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--border-accent);
+    color: var(--text-primary);
+  }
+
+  /* Hero right panel */
+  .hero-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 28px;
+    opacity: 0;
+    animation: fadeIn 1s 0.6s forwards;
+  }
+
+  .panel-header {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .panel-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent-green);
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    animation: pulse 2s infinite;
+  }
+
+  .panel-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .panel-list li {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    padding: 9px 12px;
+    border-left: 2px solid transparent;
+    background: transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .panel-list li::before {
+    content: '›';
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  .panel-list li:hover {
+    border-left-color: var(--accent-blue);
+    background: var(--accent-muted);
+    color: var(--text-primary);
+  }
+
+  .hero-stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 20px;
+    background: var(--border);
+  }
+
+  .hero-stat {
+    background: var(--bg-card);
+    padding: 16px;
+    text-align: center;
+  }
+
+  .hero-stat-val {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .hero-stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-header {
+    margin-bottom: 60px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 600;
+    color: #e0e8ef;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .section-desc {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 620px;
+    line-height: 1.75;
+  }
+
+  /* ─── OVERVIEW ─── */
+  #overview {
+    padding: 120px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 60px;
+  }
+
+  .overview-card {
+    background: var(--bg-card);
+    padding: 36px 28px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .overview-card:hover { background: var(--bg-card-hover); }
+  .overview-card:hover::before { transform: scaleX(1); }
+
+  .ov-icon {
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--accent-blue);
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  .ov-title {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+  }
+
+  .ov-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* philosophy block */
+  .philosophy-block {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .phil-cell {
+    background: var(--bg-secondary);
+    padding: 40px;
+  }
+
+  .phil-cell.wide {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent-blue);
+    padding-left: 37px;
+  }
+
+  .phil-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 14px;
+  }
+
+  .phil-text {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .phil-highlight {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  /* ─── SERVICES ─── */
+  #services {
+    padding: 120px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .service-block {
+    margin-bottom: 4px;
+    background: var(--border);
+  }
+
+  .service-block:last-child { margin-bottom: 0; }
+
+  .service-header {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: background 0.2s;
+    border-bottom: 1px solid transparent;
+  }
+
+  .service-header:hover { background: var(--bg-card-hover); }
+  .service-header.active { border-bottom-color: var(--border); }
+
+  .service-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 28px 24px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+
+  .service-title-wrap {
+    padding: 28px 32px;
+  }
+
+  .service-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 6px;
+  }
+
+  .service-title {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 600;
+    color: #e0e8ef;
+  }
+
+  .service-toggle {
+    padding: 28px 32px;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--text-dim);
+    transition: color 0.2s, transform 0.3s;
+  }
+
+  .service-header.active .service-toggle {
+    color: var(--accent-blue);
+    transform: rotate(45deg);
+  }
+
+  .service-body {
+    display: none;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+  }
+
+  .service-body.open { display: block; }
+
+  .service-body-inner {
+    padding: 48px 32px 48px 112px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .service-desc {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .scope-block {
+    margin-bottom: 28px;
+  }
+
+  .scope-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .scope-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .scope-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .scope-item {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 7px 12px;
+    border-left: 2px solid var(--border);
+    background: rgba(255,255,255,0.015);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .scope-item::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  .objectives-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .obj-item {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 10px 16px;
+    background: rgba(82,165,196,0.04);
+    border: 1px solid rgba(82,165,196,0.08);
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .obj-item::before {
+    content: '→';
+    position: absolute;
+    left: 10px;
+    color: var(--accent-blue);
+    font-size: 12px;
+  }
+
+  /* tools badge */
+  .tools-row {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tool-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--accent-cyan);
+    border: 1px solid rgba(60,201,201,0.2);
+    padding: 4px 10px;
+    background: rgba(60,201,201,0.04);
+  }
+
+  /* ─── METHODOLOGY ─── */
+  #methodology {
+    padding: 120px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    margin-top: 60px;
+  }
+
+  .method-cell {
+    background: var(--bg-card);
+    padding: 40px;
+  }
+
+  .method-cell.full {
+    grid-column: span 2;
+    background: var(--bg-secondary);
+  }
+
+  .method-icon {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .method-icon::before {
+    content: '✓';
+    font-size: 12px;
+  }
+
+  .method-title {
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .method-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  .compliance-banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border-accent);
+    border-left: 3px solid var(--accent-green);
+    padding: 24px 32px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .compliance-icon {
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--accent-green);
+    flex-shrink: 0;
+  }
+
+  .compliance-text {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+  }
+
+  .compliance-text strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* ─── DELIVERABLES ─── */
+  #deliverables {
+    padding: 120px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .deliverables-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 60px;
+  }
+
+  .deliverable-card {
+    background: var(--bg-card);
+    padding: 36px 28px;
+    position: relative;
+  }
+
+  .del-num {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 300;
+    color: rgba(82,165,196,0.12);
+    position: absolute;
+    top: 20px; right: 24px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .del-title {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  .del-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .del-bar {
+    width: 32px; height: 2px;
+    background: var(--accent-blue);
+    margin-bottom: 20px;
+    opacity: 0.6;
+  }
+
+  /* ─── AUDIENCE ─── */
+  #audience {
+    padding: 120px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .audience-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+
+  .audience-intro {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    position: sticky;
+    top: 80px;
+  }
+
+  .audience-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .audience-card {
+    background: var(--bg-card);
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    align-items: center;
+    transition: background 0.2s;
+  }
+
+  .audience-card:hover { background: var(--bg-card-hover); }
+
+  .aud-index {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  .aud-title {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .aud-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ─── CTA ─── */
+  #contact {
+    padding: 140px 0 120px;
+  }
+
+  .cta-inner {
+    max-width: 800px;
+  }
+
+  .cta-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cta-label::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--text-dim);
+  }
+
+  .cta-title {
+    font-family: var(--display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    color: #e0e8ef;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  .cta-desc {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 540px;
+    margin-bottom: 48px;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .cta-note {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    max-width: 600px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+  }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text-secondary); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 960px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+    .hero-panel { display: none; }
+    .overview-grid { grid-template-columns: 1fr 1fr; }
+    .philosophy-block { grid-template-columns: 1fr; }
+    .method-grid { grid-template-columns: 1fr; }
+    .method-cell.full { grid-column: span 1; }
+    .deliverables-grid { grid-template-columns: 1fr 1fr; }
+    .audience-layout { grid-template-columns: 1fr; gap: 40px; }
+    .audience-intro { position: static; }
+    .service-body-inner { grid-template-columns: 1fr; padding-left: 32px; }
+    nav { padding: 0 24px; }
+    .container { padding: 0 24px; }
+    .hero-inner { padding: 0 24px; }
+  }
+
+  @media (max-width: 640px) {
+    .overview-grid, .deliverables-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAVEGACIÓN ─── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <div class="logo-mark"></div>
+      VECTRAL SECURITY
+    </a>
+    <ul class="nav-links">
+      <li><a href="#overview">Visión general</a></li>
+      <li><a href="#services">Servicios</a></li>
+      <li><a href="#methodology">Metodología</a></li>
+      <li><a href="#deliverables">Entregables</a></li>
+      <li><a href="#audience">Clientes</a></li>
+      <li><a href="#contact" class="nav-cta">Solicitar servicio</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-label">Evaluación de seguridad y asesoría</div>
+      <h1 class="hero-title">
+        Pruebas adversariales controladas.<br>
+        <span>Resiliencia</span> verificada.
+      </h1>
+      <p class="hero-sub">
+        Evaluaciones de seguridad autorizadas y simulaciones de equipo rojo para infraestructura crítica, entornos ejecutivos y organizaciones empresariales. Prioridad en ingeniería. Sin marketing. Sin suposiciones.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">Solo pruebas controladas</span>
+        <span class="tag">Entornos autorizados</span>
+        <span class="tag accent">Simulación adversarial realista</span>
+        <span class="tag">Se requiere permiso por escrito</span>
+        <span class="tag">Postura de seguridad defensiva</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Solicitar servicio</a>
+        <a href="#services" class="btn-secondary">Ver servicios</a>
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <div class="panel-header">
+        <span>Alcance de la evaluación</span>
+        <span class="panel-status"><span class="status-dot"></span>Aceptando compromisos</span>
+      </div>
+      <ul class="panel-list">
+        <li>Pruebas de penetración y evaluación de infraestructura</li>
+        <li>Seguridad de endpoints y acceso físico</li>
+        <li>Evaluación de seguridad inalámbrica y RF</li>
+        <li>Acceso residencial y ejecutivo</li>
+        <li>Talleres y capacitación en seguridad</li>
+      </ul>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="hero-stat-val">100%</div>
+          <div class="hero-stat-label">Alcance autorizado</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">NDA</div>
+          <div class="hero-stat-label">Todos los compromisos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VISIÓN GENERAL ─── -->
+<section id="overview">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-num">00</div>
+      <div>
+        <div class="section-label">Modelo operativo</div>
+        <h2 class="section-title">Validación de seguridad centrada en la resiliencia</h2>
+        <p class="section-desc">
+          Las amenazas modernas requieren no solo mecanismos de defensa, sino también una verificación regular de cuán resistente es realmente la infraestructura frente a escenarios de ataque reales. Realizamos evaluaciones de seguridad autorizadas, simulaciones de equipo rojo y auditorías técnicas para clientes privados, entornos ejecutivos, propiedades residenciales e infraestructura corporativa.
+        </p>
+      </div>
+    </div>
+
+    <div class="overview-grid fade-up">
+      <div class="overview-card">
+        <div class="ov-icon">[01]</div>
+        <div class="ov-title">Pruebas controladas</div>
+        <div class="ov-desc">Todas las evaluaciones se realizan dentro de un alcance predefinido y acordado. Cero actividad no autorizada. Cada acción es deliberada y está documentada.</div>
+      </div>
+      <div class="overview-card">
+        <div class="ov-icon">[02]</div>
+        <div class="ov-title">Simulación realista</div>
+        <div class="ov-desc">Replicamos los métodos y técnicas de actores de amenazas reales para exponer los riesgos genuinos antes de que los adversarios puedan explotarlos.</div>
+      </div>
+      <div class="overview-card">
+        <div class="ov-icon">[03]</div>
+        <div class="ov-title">Orientado a la resiliencia</div>
+        <div class="ov-desc">El objetivo no es encontrar vulnerabilidades como un mero entregable, sino mejorar la postura de seguridad práctica y la resiliencia operativa del entorno.</div>
+      </div>
+      <div class="overview-card">
+        <div class="ov-icon">[04]</div>
+        <div class="ov-title">Basado en autorización</div>
+        <div class="ov-desc">Todo el trabajo se realiza exclusivamente dentro del alcance autorizado con permiso por escrito del propietario de la infraestructura. Sin excepciones.</div>
+      </div>
+    </div>
+
+    <div class="philosophy-block fade-up">
+      <div class="phil-cell wide">
+        <div class="phil-label">Postura de inteligencia defensiva</div>
+        <div class="phil-highlight">Operamos como una unidad de inteligencia de seguridad, no como una organización de ventas.</div>
+        <div class="phil-text">
+          Nuestra metodología prioriza la ingeniería. No ofrecemos puntuaciones de riesgo vagas ni informes de cumplimiento tipo checklist. Cada compromiso produce hallazgos técnicos procesables vinculados directamente a la remediación. Trabajamos con clientes que entienden que la seguridad no es un producto, es una disciplina.
+        </div>
+      </div>
+      <div class="phil-cell">
+        <div class="phil-label">Modelo de compromiso</div>
+        <div class="phil-text" style="margin-bottom: 16px;">
+          Los compromisos comienzan con la definición del alcance y la autorización por escrito. Todo el trabajo está regido por un acuerdo de confidencialidad. No discutimos los compromisos de los clientes ni compartimos hallazgos fuera de las partes autorizadas.
+        </div>
+        <div class="phil-text">
+          No brindamos servicios ofensivos fuera de entornos autorizados y no participamos en actividades que violen la ley aplicable o los requisitos de cumplimiento.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICIOS ─── -->
+<section id="services">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-label">Servicios principales</div>
+        <h2 class="section-title">Módulos de evaluación</h2>
+        <p class="section-desc">
+          Módulos estructurados de evaluación de seguridad. Cada compromiso se define individualmente y se ejecuta según un modelo de amenaza acordado.
+        </p>
+      </div>
+    </div>
+
+    <!-- Servicio 1 -->
+    <div class="service-block fade-up">
+      <div class="service-header" onclick="toggleService(this)">
+        <div class="service-num">01.1</div>
+        <div class="service-title-wrap">
+          <div class="service-tag">Infraestructura digital</div>
+          <div class="service-title">Pruebas de penetración y evaluación de infraestructura</div>
+        </div>
+        <div class="service-toggle">+</div>
+      </div>
+      <div class="service-body">
+        <div class="service-body-inner">
+          <div>
+            <p class="service-desc">
+              Demostración controlada de posibles escenarios de compromiso de infraestructura. Verificación de la infraestructura digital para determinar su resistencia práctica. El objetivo es mostrar los riesgos reales antes de que sean explotados por atacantes.
+            </p>
+
+            <div class="scope-block">
+              <div class="scope-label">Evaluación de vulnerabilidades — Alcance</div>
+              <div class="scope-items">
+                <div class="scope-item">Servidores e infraestructura VPN</div>
+                <div class="scope-item">Aplicaciones web y servicios en la nube</div>
+                <div class="scope-item">Redes internas y paneles administrativos</div>
+                <div class="scope-item">CVE conocidos y errores de configuración</div>
+                <div class="scope-item">Políticas de acceso inseguras</div>
+                <div class="scope-item">Exposición de servicios internos</div>
+                <div class="scope-item">Debilidades en la arquitectura de autenticación</div>
+              </div>
+            </div>
+
+            <div class="scope-block">
+              <div class="scope-label">Revisión de persistencia y detección</div>
+              <div class="scope-items">
+                <div class="scope-item">Arquitectura de logging, visibilidad de monitoreo y alertas</div>
+                <div class="scope-item">Evaluación de configuración EDR/XDR</div>
+                <div class="scope-item">Preparación para respuesta a incidentes</div>
+                <div class="scope-item">Presencia prolongada de malware</div>
+                <div class="scope-item">Propagación de amenazas dentro de la red</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="scope-block">
+              <div class="scope-label">Pruebas de penetración — Objetivos</div>
+              <div class="objectives-list">
+                <div class="obj-item">Obtener acceso a sistemas internos</div>
+                <div class="obj-item">Resistencia de la separación de privilegios</div>
+                <div class="obj-item">Movimiento lateral entre segmentos de red</div>
+                <div class="obj-item">Seguridad de interfaces administrativas</div>
+                <div class="obj-item">Resistencia de la protección de endpoints</div>
+              </div>
+            </div>
+
+            <div class="scope-block">
+              <div class="scope-label">Informes ejecutivos — Entregables</div>
+              <div class="objectives-list">
+                <div class="obj-item">Resumen ejecutivo + informe técnico</div>
+                <div class="obj-item">Clasificación de severidad</div>
+                <div class="obj-item">Hoja de ruta de remediación</div>
+                <div class="obj-item">Recomendaciones de hardening y resiliencia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Servicio 2 -->
+    <div class="service-block fade-up">
+      <div class="service-header" onclick="toggleService(this)">
+        <div class="service-num">01.2</div>
+        <div class="service-title-wrap">
+          <div class="service-tag">Seguridad física y de dispositivos</div>
+          <div class="service-title">Seguridad de endpoints y acceso físico</div>
+        </div>
+        <div class="service-toggle">+</div>
+      </div>
+      <div class="service-body">
+        <div class="service-body-inner">
+          <div>
+            <p class="service-desc">
+              Auditoría de acceso local y seguridad de dispositivos. Análisis de infraestructura de endpoints y puntos de entrada físicos. Demostración de escenarios reales de compromiso a través de dispositivos y canales de acceso remoto.
+            </p>
+
+            <div class="scope-block">
+              <div class="scope-label">Seguridad USB y periféricos — Alcance</div>
+              <div class="scope-items">
+                <div class="scope-item">Amenazas de dispositivos USB externos</div>
+                <div class="scope-item">Emulación HID y abuso de periféricos</div>
+                <div class="scope-item">Políticas de bloqueo de estaciones de trabajo</div>
+                <div class="scope-item">Restricciones USB y aislamiento de endpoints</div>
+                <div class="scope-item">Políticas de autorización de dispositivos</div>
+                <div class="scope-item">Acceso no autorizado a dispositivos</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="scope-block">
+              <div class="scope-label">Revisión de acceso remoto — Objetivos</div>
+              <div class="objectives-list">
+                <div class="obj-item">Mecanismos de acceso remoto inseguros</div>
+                <div class="obj-item">Permisos excesivos y exposición de credenciales</div>
+                <div class="obj-item">Puntos ciegos de monitoreo</div>
+                <div class="obj-item">Herramientas remotas inseguras</div>
+                <div class="obj-item">Escenarios de acceso remoto no autorizado</div>
+              </div>
+            </div>
+            <div class="tools-row">
+              <span class="tool-badge">Plataformas de prueba especializadas</span>
+              <span class="tool-badge">Herramientas de emulación HID</span>
+              <span class="tool-badge">Análisis de endpoints</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Servicio 3 -->
+    <div class="service-block fade-up">
+      <div class="service-header" onclick="toggleService(this)">
+        <div class="service-num">01.3</div>
+        <div class="service-title-wrap">
+          <div class="service-tag">Inalámbrico y RF</div>
+          <div class="service-title">Evaluación de seguridad inalámbrica y RF</div>
+        </div>
+        <div class="service-toggle">+</div>
+      </div>
+      <div class="service-body">
+        <div class="service-body-inner">
+          <div>
+            <p class="service-desc">
+              Auditoría de infraestructura inalámbrica y sistemas de control de acceso. Análisis del entorno RF del lugar, verificación de sistemas RFID/NFC, segmentación Wi-Fi y dispositivos de radio no autorizados.
+            </p>
+
+            <div class="scope-block">
+              <div class="scope-label">RFID / NFC / Control de acceso — Alcance</div>
+              <div class="scope-items">
+                <div class="scope-item">Sistemas RFID/NFC e infraestructura de acceso</div>
+                <div class="scope-item">Sistemas de acceso inteligente</div>
+                <div class="scope-item">Controladores de garaje y portones</div>
+                <div class="scope-item">Entornos de acceso residencial</div>
+                <div class="scope-item">Vulnerabilidades de repetición (replay)</div>
+                <div class="scope-item">Modelos de autenticación inseguros</div>
+              </div>
+            </div>
+
+            <div class="scope-block">
+              <div class="scope-label">Infraestructura inalámbrica — Alcance</div>
+              <div class="scope-items">
+                <div class="scope-item">Políticas de cifrado y aislamiento de redes para invitados</div>
+                <div class="scope-item">Exposición de dispositivos maliciosos (rogue)</div>
+                <div class="scope-item">Higiene de credenciales y segmentación inalámbrica</div>
+                <div class="scope-item">Arquitectura de confianza de dispositivos</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="scope-block">
+              <div class="scope-label">Revisión del entorno RF — Objetivos</div>
+              <div class="objectives-list">
+                <div class="obj-item">Detección de dispositivos de radio no autorizados</div>
+                <div class="obj-item">Evaluación de exposición IoT/RF</div>
+                <div class="obj-item">Verificación de canales de comunicación inalámbricos</div>
+                <div class="obj-item">Análisis de resistencia de la infraestructura RF</div>
+                <div class="obj-item">Protocolos débiles y deficiencias de segmentación</div>
+              </div>
+            </div>
+            <div class="tools-row">
+              <span class="tool-badge">Flipper Zero</span>
+              <span class="tool-badge">Proxmark3</span>
+              <span class="tool-badge">HackRF</span>
+              <span class="tool-badge">Plataformas SDR</span>
+              <span class="tool-badge">Sistemas de auditoría ESP32</span>
+              <span class="tool-badge">Analizadores de espectro</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Servicio 4 -->
+    <div class="service-block fade-up">
+      <div class="service-header" onclick="toggleService(this)">
+        <div class="service-num">01.4</div>
+        <div class="service-title-wrap">
+          <div class="service-tag">Ejecutivo y residencial</div>
+          <div class="service-title">Auditorías de seguridad residencial y ejecutiva</div>
+        </div>
+        <div class="service-toggle">+</div>
+      </div>
+      <div class="service-body">
+        <div class="service-body-inner">
+          <div>
+            <p class="service-desc">
+              Evaluación de riesgos para propiedades residenciales y residencias ejecutivas. Un área específica es la evaluación de la infraestructura de acceso residencial, enfocada en identificar vulnerabilidades utilizadas en escenarios de intrusión dirigida.
+            </p>
+
+            <div class="scope-block">
+              <div class="scope-label">Acceso residencial — Alcance</div>
+              <div class="scope-items">
+                <div class="scope-item">Portones automáticos y sistemas de garaje</div>
+                <div class="scope-item">Controles remotos RF y acceso domótico</div>
+                <div class="scope-item">Sistemas de entrada perimetral</div>
+                <div class="scope-item">Entornos de acceso inteligente</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="scope-block">
+              <div class="scope-label">Objetivos de la evaluación</div>
+              <div class="objectives-list">
+                <div class="obj-item">Modelado de riesgo de intrusión dirigida</div>
+                <div class="obj-item">Mapeo de vulnerabilidades perimetrales</div>
+                <div class="obj-item">Debilidades de controles remotos RF</div>
+                <div class="obj-item">Postura de seguridad de acceso domótico</div>
+                <div class="obj-item">Evaluación de amenazas para residencias ejecutivas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Servicio 5 -->
+    <div class="service-block fade-up">
+      <div class="service-header" onclick="toggleService(this)">
+        <div class="service-num">01.5</div>
+        <div class="service-title-wrap">
+          <div class="service-tag">Capacitación y concientización</div>
+          <div class="service-title">Talleres de seguridad y capacitación ejecutiva</div>
+        </div>
+        <div class="service-toggle">+</div>
+      </div>
+      <div class="service-body">
+        <div class="service-body-inner">
+          <div>
+            <p class="service-desc">
+              Talleres prácticos y capacitación del personal. Demostraciones prácticas en un entorno de laboratorio controlado: cómo se ven las amenazas reales en la práctica y qué medidas permiten minimizar los riesgos.
+            </p>
+
+            <div class="scope-block">
+              <div class="scope-label">Concienciación ejecutiva — Audiencia</div>
+              <div class="scope-items">
+                <div class="scope-item">Ejecutivos y family offices</div>
+                <div class="scope-item">Personal privado y personal residencial</div>
+                <div class="scope-item">Equipos de seguridad corporativa</div>
+              </div>
+            </div>
+
+            <div class="scope-block">
+              <div class="scope-label">Sesiones de concientización — Temas</div>
+              <div class="scope-items">
+                <div class="scope-item">Métodos modernos de ingeniería social</div>
+                <div class="scope-item">Riesgos de seguridad inalámbrica</div>
+                <div class="scope-item">Higiene de credenciales</div>
+                <div class="scope-item">Seguridad en viajes</div>
+                <div class="scope-item">Resistencia al phishing</div>
+                <div class="scope-item">Comunicaciones seguras</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="scope-block">
+              <div class="scope-label">Demostraciones técnicas — Alcance</div>
+              <div class="objectives-list">
+                <div class="obj-item">Riesgos de sistemas inalámbricos</div>
+                <div class="obj-item">Modelos de control de acceso débiles</div>
+                <div class="obj-item">Vulnerabilidades en entornos de dispositivos inteligentes</div>
+                <div class="obj-item">Métodos modernos de intentos de compromiso</div>
+                <div class="obj-item">Demostraciones en entorno de laboratorio controlado</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── METODOLOGÍA ─── -->
+<section id="methodology">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-label">Estándares y cumplimiento</div>
+        <h2 class="section-title">Metodología y marco de compromiso</h2>
+        <p class="section-desc">
+          Todos los compromisos se rigen por un marco estricto basado en autorización. Operamos exclusivamente dentro del alcance acordado bajo permiso por escrito, manteniendo el cumplimiento total durante todo el proceso.
+        </p>
+      </div>
+    </div>
+
+    <div class="method-grid fade-up">
+      <div class="method-cell">
+        <div class="method-icon">Solo alcance autorizado</div>
+        <div class="method-title">Se requiere autorización por escrito</div>
+        <div class="method-desc">
+          Cada compromiso comienza con una definición documentada del alcance y autorización por escrito del propietario de la infraestructura. Ninguna actividad ocurre fuera del perímetro acordado. Todo el trabajo es rastreable, reversible cuando corresponde y completamente documentado.
+        </div>
+      </div>
+      <div class="method-cell">
+        <div class="method-icon">Postura defensiva</div>
+        <div class="method-title">Solo evaluación de seguridad defensiva</div>
+        <div class="method-desc">
+          Operamos exclusivamente dentro del contexto de evaluación de seguridad defensiva. No ofrecemos servicios ofensivos fuera de entornos autorizados y no participamos en ninguna actividad que viole la legislación aplicable o los requisitos de cumplimiento.
+        </div>
+      </div>
+      <div class="method-cell">
+        <div class="method-icon">Confidencialidad</div>
+        <div class="method-title">Acuerdos estrictos de confidencialidad</div>
+        <div class="method-desc">
+          Todos los compromisos se rigen por acuerdos de confidencialidad. Los hallazgos se comparten exclusivamente con las partes autorizadas. No hacemos referencia, discutimos ni divulgamos compromisos de clientes bajo ninguna circunstancia.
+        </div>
+      </div>
+      <div class="method-cell">
+        <div class="method-icon">Orientado al cumplimiento</div>
+        <div class="method-title">Modelo de compromiso orientado al cumplimiento</div>
+        <div class="method-desc">
+          Nuestro modelo de compromiso está diseñado para organizaciones que operan bajo requisitos regulatorios y de cumplimiento. La metodología de evaluación se alinea con prácticas de seguridad defendibles adecuadas para entornos regulados y sensibles.
+        </div>
+      </div>
+      <div class="method-cell full">
+        <div class="compliance-banner">
+          <div class="compliance-icon">⊞</div>
+          <div class="compliance-text">
+            <strong>Estándares de evaluación:</strong> Todos los proyectos se ejecutan solo bajo alcance acordado, con permiso por escrito, dentro de un marco de evaluación de seguridad defensiva, y con acuerdos de confidencialidad completos vigentes. No brindamos servicios ofensivos fuera de entornos autorizados y no participamos en actividades que violen la legislación aplicable o los requisitos de cumplimiento.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ENTREGABLES ─── -->
+<section id="deliverables">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-label">Resultado del compromiso</div>
+        <h2 class="section-title">Entregables</h2>
+        <p class="section-desc">
+          Cada compromiso produce un conjunto estructurado de entregables. Los hallazgos se clasifican por gravedad y se acompañan de una ruta de remediación concreta.
+        </p>
+      </div>
+    </div>
+
+    <div class="deliverables-grid fade-up">
+      <div class="deliverable-card">
+        <div class="del-num">01</div>
+        <div class="del-bar"></div>
+        <div class="del-title">Resumen ejecutivo</div>
+        <div class="del-desc">Una descripción general concisa y no técnica del alcance del compromiso, hallazgos clave, exposición al riesgo y recomendaciones estratégicas para la alta dirección.</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="del-num">02</div>
+        <div class="del-bar"></div>
+        <div class="del-title">Informe técnico</div>
+        <div class="del-desc">Documentación técnica detallada de todos los hallazgos, pasos de reproducción, análisis de impacto y evidencia. Estructurado para equipos de ingeniería de seguridad.</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="del-num">03</div>
+        <div class="del-bar"></div>
+        <div class="del-title">Clasificación de severidad</div>
+        <div class="del-desc">Modelo estructurado de clasificación de riesgos — crítico, alto, medio, bajo e informativo — con evaluación de impacto contextual para cada hallazgo.</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="del-num">04</div>
+        <div class="del-bar"></div>
+        <div class="del-title">Hoja de ruta de remediación</div>
+        <div class="del-desc">Un plan de remediación priorizado con pasos accionables, estimaciones de tiempo y orientación sobre recursos. Diseñado para implementación, no para almacenamiento.</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="del-num">05</div>
+        <div class="del-bar"></div>
+        <div class="del-title">Recomendaciones de hardening</div>
+        <div class="del-desc">Guía de hardening de configuración, mejoras de políticas y recomendaciones arquitectónicas para reducir la superficie de ataque y mejorar la postura.</div>
+      </div>
+      <div class="deliverable-card">
+        <div class="del-num">06</div>
+        <div class="del-bar"></div>
+        <div class="del-title">Plan de mejora de la resiliencia</div>
+        <div class="del-desc">Recomendaciones estratégicas a largo plazo para mejorar la capacidad de detección, la preparación para respuesta a incidentes y la resiliencia general de la seguridad.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AUDIENCIA ─── -->
+<section id="audience">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-label">Audiencia del compromiso</div>
+        <h2 class="section-title">Con quién trabajamos</h2>
+        <p class="section-desc">
+          Trabajamos con organizaciones e individuos que requieren un alto nivel de discreción operativa, precisión técnica y credibilidad institucional.
+        </p>
+      </div>
+    </div>
+
+    <div class="audience-layout fade-up">
+      <div class="audience-intro">
+        <p style="margin-bottom: 20px;">Nuestra base de clientes está compuesta por organizaciones e individuos para quienes la seguridad no es opcional, donde una sola vulnerabilidad explotada puede tener consecuencias a gran escala.</p>
+        <p>Los compromisos se llevan a cabo bajo estricta confidencialidad, con discreción como base, no como una característica adicional.</p>
+      </div>
+      <div class="audience-cards">
+        <div class="audience-card">
+          <div class="aud-index">01</div>
+          <div>
+            <div class="aud-title">Partes interesadas de nivel gubernamental</div>
+            <div class="aud-desc">Funcionarios de alto rango y agencias gubernamentales que requieren validación de seguridad para entornos digitales y físicos con contexto operativo sensible.</div>
+          </div>
+        </div>
+        <div class="audience-card">
+          <div class="aud-index">02</div>
+          <div>
+            <div class="aud-title">Liderazgo de seguridad empresarial</div>
+            <div class="aud-desc">CTO, CISO, responsable de seguridad y organizaciones empresariales que requieren una evaluación técnica independiente de la infraestructura y los controles de seguridad existentes.</div>
+          </div>
+        </div>
+        <div class="audience-card">
+          <div class="aud-index">03</div>
+          <div>
+            <div class="aud-title">Operadores de infraestructura crítica</div>
+            <div class="aud-desc">Organizaciones que gestionan sistemas críticos donde las fallas de seguridad conllevan un riesgo sistémico. Compromisos de evaluación adaptados a las restricciones operativas y requisitos de cumplimiento.</div>
+          </div>
+        </div>
+        <div class="audience-card">
+          <div class="aud-index">04</div>
+          <div>
+            <div class="aud-title">Entornos de protección ejecutiva</div>
+            <div class="aud-desc">Evaluación de seguridad personal, residencial y de nivel ejecutivo para personas de alto perfil, family offices y entornos de protección privada.</div>
+          </div>
+        </div>
+        <div class="audience-card">
+          <div class="aud-index">05</div>
+          <div>
+            <div class="aud-title">Clientes residenciales privados de alta seguridad</div>
+            <div class="aud-desc">Evaluaciones de residencias y propiedades privadas para individuos que requieren una evaluación independiente del acceso físico, la seguridad perimetral y los entornos domóticos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section id="contact">
+  <div class="container">
+    <div class="cta-inner fade-up">
+      <div class="cta-label">Iniciar compromiso</div>
+      <h2 class="cta-title">Definir alcance.<br>Comenzar evaluación.</h2>
+      <p class="cta-desc">
+        Los compromisos comienzan con una revisión confidencial del alcance. Evaluaremos la viabilidad, acordaremos los parámetros de autorización y propondremos una metodología alineada con su modelo de amenaza y restricciones operativas.
+      </p>
+      <div class="cta-actions">
+        <a href="mailto:b1naryw0rm@proton.me" class="btn-primary">Solicitar servicio</a>
+        <a href="https://t.me/b1naryworm" class="btn-secondary">Contactar para revisión de alcance</a>
+      </div>
+      <div class="cta-note">
+        Todas las consultas iniciales se manejan bajo estricta confidencialidad. Ninguna discusión de alcance o compromiso preliminar implica compromiso por ninguna de las partes. Se requiere autorización por escrito antes de que comience cualquier trabajo técnico. Operamos exclusivamente dentro de entornos autorizados y en cumplimiento de la ley aplicable.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PIE DE PÁGINA ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">VECTRAL SECURITY</div>
+    <div class="footer-links">
+      <a href="#overview">Visión general</a>
+      <a href="#services">Servicios</a>
+      <a href="#methodology">Metodología</a>
+      <a href="#contact">Contratar</a>
+    </div>
+    <div class="footer-copy">Solo evaluaciones autorizadas · Todos los compromisos regidos por NDA</div>
+  </div>
+</footer>
+
+<script>
+  // Acordeón
+  function toggleService(header) {
+    const body = header.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+
+    document.querySelectorAll('.service-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.service-header').forEach(h => h.classList.remove('active'));
+
+    if (!isOpen) {
+      body.classList.add('open');
+      header.classList.add('active');
+    }
+  }
+
+  // Animaciones de desplazamiento
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Retraso escalonado en cuadrículas
+  document.querySelectorAll('.overview-grid, .deliverables-grid, .method-grid').forEach(grid => {
+    const children = grid.children;
+    Array.from(children).forEach((child, i) => {
+      child.style.transitionDelay = `${i * 0.06}s`;
+    });
+  });
+</script>
+</body>
+</html>
